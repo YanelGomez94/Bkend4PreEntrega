@@ -48,7 +48,7 @@ app.use(passport.initialize())
 app.use ('/' ,appRouter)
 
 mongoose.set('strictQuery',false)
-mongoose.connect(MONGO_URI)
+mongoose.connect(CONFIG.MONGO_URI)
 .then(()=>{
   console.log("Connect DB")
 })
