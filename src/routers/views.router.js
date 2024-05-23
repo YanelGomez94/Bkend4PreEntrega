@@ -3,6 +3,7 @@ import cartsController from '../controllers/carts.controller.js'
 import messagesController from '../controllers/messages.controller.js'
 import productsModel from "../dao/models/products.models.js";
 import mongoose from "mongoose";
+import { generateProducts } from "../utils/fakerProducts.js";
 
 const router = Router()
 
@@ -98,6 +99,14 @@ router.get('/logout',(req,res)=>{
         }
         else res.send({status:'error', message: 'Problema al cerrar sesion'})
     })
+})
+
+router.get('/mockingProducts',(req,res)=>{
+    let products = []
+    for (let i = 0; i < 100; i++) {
+        products.push(generateProducts())
+    }
+    res.send({ status: "success", payload: products });
 })
 
 export default router;

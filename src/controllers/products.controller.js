@@ -1,5 +1,6 @@
 import{ productService} from '../services/index.js'
 import productsModel from '../dao/models/products.models.js'
+import { CustomError, generateErrorInfo } from '../utils/errors.js';
 
 class ProductController{
     getProducts =async(req,res)=>{
@@ -52,8 +53,14 @@ class ProductController{
     createProduct = async(req,res)=>{
         try{
             const { title, description, code, price, stock, category, thumbnails } = req.body
-            if (!title || !description || !code || !price || !stock || !category)
-                return res.status(200).send({status:"Error", error: "All fields are required to add a product"});
+            if (!title || !description || !code || !price || !stock || !category){
+                CustomError.createError({
+                    statusCode: 401, 
+                    name: "All fields are required to add a product", 
+                    cause: generateErrorInfo.missingInfo(), 
+                    code: 3
+                })
+            }
             let newProduct ={
                 title,description,code,price,stock,category,thumbnails
             }

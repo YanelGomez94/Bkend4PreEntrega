@@ -12,6 +12,7 @@ import messagesController from './controllers/messages.controller.js';
 import appRouter from './routers/app.router.js'
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+import errorHandler from './middlewares/error.middleware.js';
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -46,9 +47,10 @@ app.use(passport.session({
 
 app.use(passport.initialize())
 app.use ('/' ,appRouter)
+app.use(errorHandler)
 
 mongoose.set('strictQuery',false)
-mongoose.connect(CONFIG.MONGO_URI)
+mongoose.connect(MONGO_URI)
 .then(()=>{
   console.log("Connect DB")
 })
