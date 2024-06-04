@@ -34,4 +34,3 @@ export class generateErrorInfo {
         return "The user was unauthorized."
     }
 }
-

@@ -13,6 +13,8 @@ import appRouter from './routers/app.router.js'
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import errorHandler from './middlewares/error.middleware.js';
+import { addLogger } from './utils/logger.js';
+
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -29,6 +31,19 @@ app.engine('handlebars',handlebars.engine());
 app.set('views',__dirname+'/views')
 app.set('view engine','handlebars');
 app.use(express.static(__dirname + "/public"));
+
+app.use(addLogger)
+const ejemploError = 'Este es un error de ejemplo'
+app.get("/loggerTest", (req, res) => {
+  req.logger.fatal('Se produjo un error crítico. La aplicación se cerrará.')
+  req.logger.error('Error al procesar la solicitud:', ejemploError)
+  req.logger.warning('Advertencia: La capacidad del sistema está casi al límite.')
+  req.logger.info(`Se ha recibido una solicitud ${req.method} en la ruta ${req.url}.`)
+  req.logger.http(`Solicitud ${req.method} recibida en la ruta ${req.url}.`,  req.body );
+  req.logger.debug(`Variable X ejemplo:', ${new Date().toLocaleTimeString()}`)
+  res.send("Test Logger ejecutandose")
+})
+
 
 app.use(session({
   store: MongoStore.create({

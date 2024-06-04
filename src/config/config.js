@@ -1,8 +1,13 @@
 import dotenv from "dotenv"
 
-dotenv.config()
+const environment = "DEVELOPMENT"
+
+dotenv.config({
+    path: environment === "PRODUCTION" ? './.env.production' : './.env.development'
+})
 
 const CONFIG ={
+    ENVIRONMENT: environment,
     MONGO_URI: process.env.MONGO_URI || '',
     PORT: process.env.PORT || 3000,
     DATASOURCE: process.env.PERSISTENCE || 'MONGO',

@@ -1,15 +1,50 @@
-export default class MessagesRepository {
+export default class CartsRepository {
     constructor(dao) {
         this.dao = dao;
     }
 
-    getMessages = () => {
-        let result = this.dao.getMessages()
+    getCarts = () => {
+        let result = this.dao.getCarts();
         return result;
-    }
+    };
 
-    createMessage = (newMessage) => {
-        let result = this.dao.createMessage(newMessage);
+    getCartById = (cid) => {
+        let result = this.dao.getCartById(cid);
+        return result;
+    };
+
+    createCart = () => {
+        let result = this.dao.createCart();
+        return result;
+    };
+
+    addProductToCart = (cid, pid) => {
+        let result = this.dao.addProductToCart(cid, pid);
+        return result;
+    };
+
+    deleteAllProductsInCart = (cid) => {
+        let result = this.dao.deleteAllProductsInCart(cid);
+        return result;
+    };
+
+    deleteProductInCart = (cid, pid) => {
+        let result = this.dao.deleteProductInCart(cid, pid);
+        return result;
+    };
+
+    updateCart = (cid, products) => {
+        let result = this.dao.updateCart(cid, products);
+        return result;
+    };
+
+    updateQuantity = (cid, pid, quantity) => {
+        let result = this.dao.updateQuantity(cid, pid, quantity);
+        return result;
+    };
+
+    purchaseCart = (cid) => {
+        let result = this.dao.purchaseCart(cid);
         return result;
     }
 }
