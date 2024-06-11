@@ -59,15 +59,40 @@ class UserController{
 
     deleteUser = async (req, res) => {
         try {
-            const { uid } = req.params;
-
-            let result = await userService.deleteUser(uid);
-
-            res.sendSuccess(result);
+            const { uid } = req.params
+            let result = await userService.deleteUser(uid)
+            res.sendSuccess(result)
         } catch (error) {
             res.status(400).send({status:"Error", error: `Failed to delete user. ${error.message}`})
         }
     }
 
+    swapUserRole = async(req,res)=>{
+        try{
+            const { uid } = req.params
+            let result = await userService.swapRole(uid)
+            res.sendSuccess(result)
+        }catch (error) {
+            res.status(400).send({status:"Error", error: `Failed to swap user role. ${error.message}`})
+        }
+    }
+
+    linkRecovery = async(req,res)=>{
+        try{
+            let result = await userService.recovery()
+            res.sendSuccess(result)
+        }catch (error) {
+            res.status(400).send({status:"Error", error: `Failed to show link recovery. ${error.message}`})
+        }
+    }
+
+    recoverPass = async(req,res)=>{
+        try{
+            let result = await userService.recoveryPassword()
+            res.sendSuccess(result)
+        }catch (error) {
+            res.status(400).send({status:"Error", error: `Failed to recover password. ${error.message}`})
+        }
+    }
 }
 export default new UserController()
