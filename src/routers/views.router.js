@@ -101,7 +101,7 @@ router.get('/logout',(req,res)=>{
     })
 })
 
-router.get('/mockingProducts',(req,res)=>{
+router.get('/mockProducts',(req,res)=>{
     let products = []
     for (let i = 0; i < 100; i++) {
         products.push(generateProducts())

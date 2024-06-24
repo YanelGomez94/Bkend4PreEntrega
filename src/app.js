@@ -1,7 +1,7 @@
 import express from "express"
+import mongoose from "mongoose"
 import CONFIG from "./config/config.js"
 import cors from 'cors'
-import mongoose from "mongoose"
 import { Server } from "socket.io"
 import session from "express-session";
 import MongoStore from "connect-mongo";
@@ -14,7 +14,8 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import errorHandler from './middlewares/error.middleware.js';
 import { addLogger } from './utils/logger.js';
-
+import swaggerUiExpress from 'swagger-ui-express'
+import swaggerJsdoc from 'swagger-jsdoc'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -32,6 +33,16 @@ app.set('views',__dirname+'/views')
 app.set('view engine','handlebars');
 app.use(express.static(__dirname + "/public"));
 
+mongoose.set('strictQuery',false)
+mongoose.connect(MONGO_URI)
+.then(()=>{
+  console.log("Connect DB")
+})
+.catch((error)=>{
+  console.log("Failed to connect DB")
+  throw error
+})
+
 app.use(addLogger)
 const ejemploError = 'Este es un error de ejemplo'
 app.get("/loggerTest", (req, res) => {
@@ -43,7 +54,6 @@ app.get("/loggerTest", (req, res) => {
   req.logger.debug(`Variable X ejemplo:', ${new Date().toLocaleTimeString()}`)
   res.send("Test Logger ejecutandose")
 })
-
 
 app.use(session({
   store: MongoStore.create({
@@ -64,16 +74,6 @@ app.use(passport.initialize())
 app.use ('/' ,appRouter)
 app.use(errorHandler)
 
-mongoose.set('strictQuery',false)
-mongoose.connect(MONGO_URI)
-.then(()=>{
-  console.log("Connect DB")
-})
-.catch((error)=>{
-  console.log("Failed to connect DB")
-  throw error
-})
-
 
 const messages=[];
 io.on('connection',socket=>{
@@ -83,3 +83,21 @@ io.on('connection',socket=>{
     messagesController.createMessage(data)
   })
 })
+
+const swaggerOptions={
+  definition:{
+      openapi: '3.0.0',
+      info:{
+          title:' Documentacion de las APIs',
+          description: ' Información de rutas para productos y carritos de compras',
+          version: '1.0.0',
+          contact:{
+              name: "Yanel Gomez",
+              url:'https://github.com/YanelGomez94'
+          }
+      }
+  },
+  apis:[`./docs/*.yaml`]
+}
+const spec = swaggerJsdoc(swaggerOptions)
+app.use('/apidocs',swaggerUiExpress.serve,swaggerUiExpress.setup(spec))

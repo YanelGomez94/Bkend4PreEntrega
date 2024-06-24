@@ -82,7 +82,7 @@ export default class Users{
             const {email} = req.body;
             req.logger.debug("Pre nodemailer")
             try {
-                transport.sendMail({from: 'danicis99@gmail.com',
+                transport.sendMail({from: 'shaniigomez94@gmail.com',
                 to: email,
                 subject: 'Reestablece tu contraseña',
                 html: `
