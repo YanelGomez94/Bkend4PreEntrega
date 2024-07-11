@@ -94,5 +94,25 @@ class UserController{
             res.status(400).send({status:"Error", error: `Failed to recover password. ${error.message}`})
         }
     }
+
+    getUserDocuments = (req, res) => {      
+        try {
+            let isLogin
+            let user
+            if (!req.user) {
+                isLogin = false;
+                user = {};
+            } else {
+                isLogin = true
+                user = req.user;
+            }
+
+            res.render('documents', {isLogin, user})
+        } catch(error) {
+            console.log(error)
+            res.render('error')
+        }
+    }
+    
 }
 export default new UserController()
