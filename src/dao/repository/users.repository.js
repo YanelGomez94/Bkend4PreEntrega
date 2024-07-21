@@ -7,9 +7,9 @@ export default class UsersRepository {
 
     getUsers = async () => {
         let result = await this.dao.getUsers()
-        let userDto = new usersDto(result)
-        let users = userDto.getUsers()
-        return users
+        //let userDto = new usersDto(result)
+        //let users = userDto.getUsers()
+        return result
     }
 
     getUserById = async (uid) => {
@@ -44,6 +44,11 @@ export default class UsersRepository {
 
     deleteUser = async (uid) => {
         let result = await this.dao.deleteUser(uid)
+        return result
+    }
+
+    deleteInactiveUsers = async() =>{
+        let result = await this.dao.deleteInactiveUsers()
         return result
     }
 

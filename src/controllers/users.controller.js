@@ -16,7 +16,10 @@ class UserController{
         try {
             const id = req.params.uid
             let user = await userService.getUserById(id) 
-            res.send({ status:"Success", payload: user})
+            if(user === null)
+                res.send({ status:"Success", payload: 'User not found'})
+            else
+                res.send({ status:"Success", payload: user})
         } catch (error) {
             res.status(400).send({status:"Error", error: `Failed to get users. ${error.message}`})
         }
@@ -67,6 +70,15 @@ class UserController{
         }
     }
 
+    deleteInactiveUsers = async (req, res) => {
+        try {
+            let result = await userService.deleteInactiveUsers()
+            res.sendSuccess(result)
+        } catch (error) {
+            res.status(400).send({status:"Error", error: `Failed to delete inactive users. ${error.message}`})
+        }
+    }
+
     swapUserRole = async(req,res)=>{
         try{
             const { uid } = req.params
@@ -106,7 +118,6 @@ class UserController{
                 isLogin = true
                 user = req.user;
             }
-
             res.render('documents', {isLogin, user})
         } catch(error) {
             console.log(error)

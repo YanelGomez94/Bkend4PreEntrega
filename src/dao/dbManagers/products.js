@@ -23,7 +23,7 @@ export default class Products{
 
     updateProduct = async (id, product) => {
         let result = []
-        const exist = await this.getById(id)
+        const exist = await this.getProductById(id)
         if(exist)
             result = await productsModel.updateOne({_id: id}, product)
         else
@@ -33,10 +33,21 @@ export default class Products{
 
     deleteProduct = async (id) => {
         let result = []
-        const exist = await this.getById(id)
-        if(exist)
+        const exist = await this.getProductById(id)
+        if (exist.owner != 'Admin') email = exist.owner
+        if(exist){
+            await transport.sendMail({
+                from: 'shaniigomez94@gmail.com',
+                to: email,
+                subject: `Producto ${exist.title} eliminado`,
+                html: `
+                <div style="background-color: black; color: green; display: flex; flex-direction: column; justify-content: center;  align-items: center;">
+                <h1>Se ha borrado tu producto ${exist.title}</h1>
+                </div>
+                `
+            })
             result = await productsModel.deleteOne({_id: id})
-        else
+        }else
             result = false
         return result
     }

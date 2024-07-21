@@ -4,6 +4,8 @@ import messagesController from '../controllers/messages.controller.js'
 import productsModel from "../dao/models/products.models.js";
 import mongoose from "mongoose";
 import { generateProducts } from "../utils/fakerProducts.js";
+import usersControllers from "../controllers/users.controller.js";
+import { userService } from "../services/index.js";
 
 const router = Router()
 
@@ -109,4 +111,10 @@ router.get('/mockProducts',(req,res)=>{
     res.send({ status: "success", payload: products });
 })
 
+
+router.get('/viewUsers',async (req,res)=>{
+    let users = await userService.getUsers() 
+    if(users !== null)
+        res.render("viewUsers", users)
+})
 export default router;

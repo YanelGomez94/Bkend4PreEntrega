@@ -7,7 +7,8 @@ class MessageController{
             const result = await messageService.getMessages()
             res.send({ status:"success", payload: result})
         }catch(e){
-            res.status(400).send({status:"Error", error: `Failed to load messages. ${e.message}`})
+            console.log(e)
+            //res.status(400).send({status:"Error", error: `Failed to load messages. ${e.message}`})
         }
     }
     getMessageById = async (req,res) =>{
@@ -16,7 +17,8 @@ class MessageController{
             const result = await messageService.getMessageById(id)
             res.send({ status:"success", payload: result})
         }catch(e){
-            res.status(400).send({status:"Error", error: `Failed to load messages. ${e.message}`})
+            console.log(e)
+            //res.status(400).send({status:"Error", error: `Failed to load messages. ${e.message}`})
         }
     }
 
@@ -26,7 +28,8 @@ class MessageController{
             const result = await messageService.createMessage(message)
             res.send({ status:"success", payload: result})
         }catch(e){
-            res.status(400).send({status:"Error", error: `Failed to add messages. ${e.message}`})
+            console.log(e)
+            //res.status(400).send({status:"Error", error: `Failed to add messages. ${e.message}`})
         }
     }
 }
